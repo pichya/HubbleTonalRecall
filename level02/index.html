@@ -75,7 +75,7 @@
     <div>
     </div>
 
-    <script>
+   <script>
 		// initialize variables
 		gamestate = "UIGameWait";
 		playerCounter = 0;
@@ -121,7 +121,7 @@
 			toneCounter = 0;
 			toneTotal = 0;
 			gamestate = "computerTurnStart";
-			setTimeout(playComputerSound, 1000);
+			setTimeout(playComputerSound, 800);
 		}
 		// UI Event Listeners
 		st.addEventListener('click', function () {
@@ -144,17 +144,17 @@
 			playSound(computerArray[toneCounter]);
 			toneCounter++;
 			gamestate = "computerTurnPlaySoundWait";
-			setTimeout(arraySoundDone, 600);
+			setTimeout(arraySoundDone, 800);
 		}
 		function arraySoundDone(){
 			PlayArraySilence();
 		}
 		function PlayArraySilence(){
 			stopSound();
-			setTimeout(arrayDone, 600);
+			setTimeout(arrayDone, 800);
 		}
 		function PlayerSilence(){
-			setTimeout(playerDone, 400);
+			setTimeout(playerDone, 600);
 		}
 		function playerDone(){
 			stopSound();
@@ -168,7 +168,7 @@
 			computerArray.push(randomNumber);
 			playSound(randomNumber);
 			gamestate = "computerTurnPlayRandomSoundWait";
-			setTimeout(randomSoundDone, 600);
+			setTimeout(randomSoundDone, 800);
 		}
 		function randomSoundDone(){
 			PlayRandomSilence();
@@ -277,8 +277,7 @@
 			}
 		}); 
 	
-		
-    </script>
+	</script>
 </body>
 
 </html>

@@ -119,7 +119,7 @@
 			toneCounter = 0;
 			toneTotal = 0;
 			gamestate = "computerTurnStart";
-			setTimeout(playComputerSound, 1500);
+			setTimeout(playComputerSound, 800);
 		}
 		// UI Event Listeners
 		st.addEventListener('click', function () {
@@ -142,21 +142,21 @@
 			playSound(computerArray[toneCounter]);
 			toneCounter++;
 			gamestate = "computerTurnPlaySoundWait";
-			setTimeout(arraySoundDone, 1500);
+			setTimeout(arraySoundDone, 800);
 		}
 		function arraySoundDone(){
 			PlayArraySilence();
 		}
 		function PlayArraySilence(){
 			stopSound();
-			setTimeout(arrayDone, 1500);
+			setTimeout(arrayDone, 800);
 		}
 		function PlayerSilence(){
-			setTimeout(playerDone, 1500);
+			setTimeout(playerDone, 600);
 		}
 		function playerDone(){
 			stopSound();
-			setTimeout(arrayDone, 1500);
+			setTimeout(arrayDone, 800);
 		}
 		function arrayDone(){
 			playComputerSound();
@@ -166,14 +166,14 @@
 			computerArray.push(randomNumber);
 			playSound(randomNumber);
 			gamestate = "computerTurnPlayRandomSoundWait";
-			setTimeout(randomSoundDone, 1500);
+			setTimeout(randomSoundDone, 800);
 		}
 		function randomSoundDone(){
 			PlayRandomSilence();
 		}
 		function PlayRandomSilence(){
 			stopSound();
-			setTimeout(randomDone, 1500);
+			setTimeout(randomDone, 600);
 		}
 		function randomDone(){
 			playerCounter = 0;
