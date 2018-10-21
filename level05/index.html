@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+ 
+<head>
+    <meta charset="utf-8">
+    <title>Hubble Tonal Recall - Level 5</title>
+    <meta name="description" content="2018 Space Apps Challenge - Level 5">
+    <script src="../js/aframe.min.js"></script>
+    <link rel="stylesheet" href="../css/animate.css" />
+    <link rel="stylesheet" href="../css/style.css" />
+
+</head>
+
+<body>
+    <a-scene>
+        <!--<a-scene vr-mode-ui="enabled: false">-->
+
+        <!-- preload assets -->
+        <a-assets>
+			<img id="level1" src="../assets/ESO 580-49,.jpg">
+			<img id="playButton" src="../assets/play.png">
+			<img id="returnButton" src="../assets/return.png">
+			<img id="textblock" src="../assets/text3.jpg">
+        </a-assets>
+
+		<!-- Using the asset management system. -->
+		<a-curvedimage src="#level1" height="46.0" radius="30" theta-length="110"
+						 rotation="0 125 0" scale="0.8 0.8 0.8">
+		</a-curvedimage>
+		  
+		<a-image id="playImage" src="#playButton" width="10" height="6" position="-4 -12 -15" rotation="0 0 0" scale="0.3 0.3 0.3"></a-image>
+		<a-image id="returnImage" src="#returnButton" width="10" height="6" position="4 -12 -15" rotation="0 0 0" scale="0.3 0.3 0.3"></a-image>
+		<a-image id="textImage" src="#textblock" width="42" height="10" position="0 -18 -15" rotation="0 0 0" scale="0.6 0.6 0.6"></a-image>
+
+        <!-- lights/sky/camera -->
+        <a-light type="spot" color="#333" position="-20 0 0"></a-light>
+        <a-light type="point" color="#AAA" position="0 5 0"></a-light>
+
+		<a-sky color="#000000"></a-sky>
+		<!-- Linticular -->
+		<a-entity position="0 0 0">
+			<a-camera>
+				<a-cursor color="#fff" fuse="true" timeout="1500"></a-cursor>
+			</a-camera>
+		</a-entity>
+		
+    </a-scene>
+
+    <div>
+    </div>
+
+    <script>
+		var st = document.querySelector('#playImage');
+		var rt = document.querySelector('#returnImage');
+		
+		// linked in url
+		st.addEventListener('click', function () {
+			
+		}); 
+		rt.addEventListener('click', function () {
+			window.open("../index.html", "_self");
+		}); 
+		
+		
+    </script>
+</body>
+
+</html>
