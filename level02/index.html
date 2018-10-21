@@ -12,6 +12,23 @@
 </head>
 
 <body>
+	<audio id="player"></audio>
+	<audio id="ambient" loop>
+		<source src="../assets/ambient.mp3" />
+	</audio>
+	<audio id="tone1">
+		<source src="../assets/beep1.mp3" />
+	</audio>
+	<audio id="tone2">
+		<source src="../assets/beep2.mp3" />
+	</audio>
+	<audio id="tone3">
+		<source src="../assets/beep3.mp3" />
+	</audio>
+	<audio id="wrong">
+		<source src="../assets/wrong.mp3" />
+	</audio>
+	
     <a-scene>
         <!--<a-scene vr-mode-ui="enabled: false">-->
 
@@ -20,6 +37,11 @@
 			<img id="level1" src="../assets/constellationLeo.jpg">
 			<img id="playButton" src="../assets/play.png">
 			<img id="returnButton" src="../assets/return.png">
+			
+			<img id="blueglow" src="assets/blueGlow.png">
+			<img id="orangeglow" src="assets/orangeGlow.png">
+			<img id="whiteglow" src="assets/whiteGlow.png">
+			
 			<img id="textblock" src="../assets/text3.jpg">
         </a-assets>
 
@@ -32,6 +54,10 @@
 		<a-image id="returnImage" src="#returnButton" width="10" height="6" position="4 -12 -15" rotation="0 0 0" scale="0.3 0.3 0.3"></a-image>
 		<a-image id="textImage" src="#textblock" width="42" height="10" position="0 -18 -15" rotation="0 0 0" scale="0.6 0.6 0.6"></a-image>
 
+		<a-image id="glow1" src="#blueglow" width="5" height="5" opacity="0" position="6.5 -6.25 -15" rotation="0 0 0" scale="0.5 0.5 0.5"></a-image>
+		<a-image id="glow2" src="#orangeglow" width="4" height="4" opacity="0" position="8 -15 -15" rotation="0 0 0" scale="0.5 0.5 0.5"></a-image>
+		<a-image id="glow3" src="#whiteglow" width="11" height="11" opacity="0" position="0 0 -15" rotation="0 0 0" scale="0.5 0.5 0.5"></a-image>
+		
         <!-- lights/sky/camera -->
         <a-light type="spot" color="#333" position="-20 0 0"></a-light>
         <a-light type="point" color="#AAA" position="0 5 0"></a-light>
@@ -50,16 +76,207 @@
     </div>
 
     <script>
+		// initialize variables
+		gamestate = "UIGameWait";
+		playerCounter = 0;
+		toneCounter = 0;
+		toneTotal = 0;
+		computerArray = [];
+		// audio reference
+		var amb = document.querySelector('#ambient');
+		var fx1 = document.querySelector('#tone1');
+		var fx2 = document.querySelector('#tone2');
+		var fx3 = document.querySelector('#tone3');
+		var fx4 = document.querySelector('#wrong');
+		// ui buttons
 		var st = document.querySelector('#playImage');
 		var rt = document.querySelector('#returnImage');
-		
-		// linked in url
+		var tb = document.querySelector('#textImage');
+		// gameplay buttons
+		var gl1 = document.querySelector('#glow1');
+		var gl2 = document.querySelector('#glow2');
+		var gl3 = document.querySelector('#glow3');
+		//
+		gl1.setAttribute('opacity', "0");
+		gl2.setAttribute('opacity', "0");
+		gl3.setAttribute('opacity', "0");
+		// Gameplay Logic
+		function startGame(){
+			st.setAttribute('opacity', "0");
+			rt.setAttribute('opacity', "0");
+			tb.setAttribute('opacity', "0");
+			//
+			fx1.play();
+			fx2.play();
+			fx3.play();
+			fx4.play();
+			//
+			fx1.pause();
+			fx2.pause();
+			fx3.pause();
+			fx4.pause();
+			//
+			amb.play();
+			//
+			toneCounter = 0;
+			toneTotal = 0;
+			gamestate = "computerTurnStart";
+			setTimeout(playComputerSound, 1000);
+		}
+		// UI Event Listeners
 		st.addEventListener('click', function () {
-			
+			if (gamestate == "UIGameWait"){
+				startGame();
+			}
 		}); 
 		rt.addEventListener('click', function () {
 			window.open("../index.html", "_self");
 		}); 
+		// CPU Turn
+		function playComputerSound(){
+			if (toneCounter<computerArray.length){
+				playArraySound();
+			}else{
+				playRandomSound();
+			}
+		}
+		function playArraySound(){
+			playSound(computerArray[toneCounter]);
+			toneCounter++;
+			gamestate = "computerTurnPlaySoundWait";
+			setTimeout(arraySoundDone, 600);
+		}
+		function arraySoundDone(){
+			PlayArraySilence();
+		}
+		function PlayArraySilence(){
+			stopSound();
+			setTimeout(arrayDone, 600);
+		}
+		function PlayerSilence(){
+			setTimeout(playerDone, 400);
+		}
+		function playerDone(){
+			stopSound();
+			setTimeout(arrayDone, 800);
+		}
+		function arrayDone(){
+			playComputerSound();
+		}
+		function playRandomSound(){
+			randomNumber = Math.floor(Math.random() * 3); 
+			computerArray.push(randomNumber);
+			playSound(randomNumber);
+			gamestate = "computerTurnPlayRandomSoundWait";
+			setTimeout(randomSoundDone, 600);
+		}
+		function randomSoundDone(){
+			PlayRandomSilence();
+		}
+		function PlayRandomSilence(){
+			stopSound();
+			setTimeout(randomDone, 600);
+		}
+		function randomDone(){
+			playerCounter = 0;
+			gamestate = "playerTurn";
+		}
+		function playSound(soundNumber){
+			if (soundNumber==0){
+				gl1.setAttribute('opacity', "1");
+				fx1.play();
+			}
+			if (soundNumber==1){
+				gl2.setAttribute('opacity', "1");
+				fx2.play();
+			}
+			if (soundNumber==2){
+				gl3.setAttribute('opacity', "1");
+				fx3.play();
+			}
+		}
+		function stopSound(){
+			gl1.setAttribute('opacity', "0");
+			gl2.setAttribute('opacity', "0");
+			gl3.setAttribute('opacity', "0");
+		}
+		function gameOver(){
+			gamestate = "UIGameWait";
+			playerCounter = 0;
+			toneCounter = 0;
+			toneTotal = 0;
+			computerArray = [];
+			//
+			st.setAttribute('opacity', "1");
+			rt.setAttribute('opacity', "1");
+			tb.setAttribute('opacity', "1");
+		}
+		// Player Turn
+		gl1.addEventListener('mouseenter', function () {
+			if (gamestate == "playerTurn"){
+				if (computerArray[playerCounter] == 0){
+					playSound(0);
+					playerCounter++;
+					if (playerCounter==computerArray.length){
+						toneCounter = 0;
+						gamestate = "computerTurnStart";
+						PlayerSilence();
+					}
+				}else{
+					fx4.play();
+					gameOver();
+				}
+			}
+		}); 
+		gl2.addEventListener('mouseenter', function () {
+			if (gamestate == "playerTurn"){
+				if (computerArray[playerCounter] == 1){
+					playSound(1);
+					playerCounter++;
+					if (playerCounter==computerArray.length){
+						toneCounter = 0;
+						gamestate = "computerTurnStart";
+						PlayerSilence();
+					}
+				}else{
+					fx4.play();
+					gameOver();
+				}
+			}
+		}); 
+		gl3.addEventListener('mouseenter', function () {
+			if (gamestate == "playerTurn"){
+				if (computerArray[playerCounter] == 2){
+					playSound(2);
+					playerCounter++;
+					if (playerCounter==computerArray.length){
+						toneCounter = 0;
+						gamestate = "computerTurnStart";
+						PlayerSilence();
+					}
+				}else{
+					fx4.play();
+					gameOver();
+				}
+			}
+		}); 
+		//
+		gl1.addEventListener('mouseleave', function () {
+			if (gamestate == "playerTurn" || gamestate == "computerTurnStart" ){
+				gl1.setAttribute('opacity', "0");
+			}
+		}); 
+		gl2.addEventListener('mouseleave', function () {
+			if (gamestate == "playerTurn" || gamestate == "computerTurnStart"){
+				gl2.setAttribute('opacity', "0");
+			}
+		}); 
+		gl3.addEventListener('mouseleave', function () {
+			if (gamestate == "playerTurn" || gamestate == "computerTurnStart"){
+				gl3.setAttribute('opacity', "0");
+			}
+		}); 
+	
 		
     </script>
 </body>

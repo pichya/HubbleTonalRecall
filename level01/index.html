@@ -17,7 +17,16 @@
 		<source src="../assets/ambient.mp3" />
 	</audio>
 	<audio id="tone1">
-		<source src="../assets/beep.mp3" />
+		<source src="../assets/beep1.mp3" />
+	</audio>
+	<audio id="tone2">
+		<source src="../assets/beep2.mp3" />
+	</audio>
+	<audio id="tone3">
+		<source src="../assets/beep3.mp3" />
+	</audio>
+	<audio id="wrong">
+		<source src="../assets/wrong.mp3" />
 	</audio>
 
     <a-scene>
@@ -74,6 +83,9 @@
 		// audio reference
 		var amb = document.querySelector('#ambient');
 		var fx1 = document.querySelector('#tone1');
+		var fx2 = document.querySelector('#tone2');
+		var fx3 = document.querySelector('#tone3');
+		var fx4 = document.querySelector('#wrong');
 		// ui buttons
 		var st = document.querySelector('#playImage');
 		var rt = document.querySelector('#returnImage');
@@ -93,15 +105,21 @@
 			tb.setAttribute('opacity', "0");
 			//
 			fx1.play();
+			fx2.play();
+			fx3.play();
+			fx4.play();
 			//
 			fx1.pause();
+			fx2.pause();
+			fx3.pause();
+			fx4.pause();
 			//
 			amb.play();
 			//
 			toneCounter = 0;
 			toneTotal = 0;
 			gamestate = "computerTurnStart";
-			setTimeout(playComputerSound, 1000);
+			setTimeout(playComputerSound, 1500);
 		}
 		// UI Event Listeners
 		st.addEventListener('click', function () {
@@ -124,21 +142,21 @@
 			playSound(computerArray[toneCounter]);
 			toneCounter++;
 			gamestate = "computerTurnPlaySoundWait";
-			setTimeout(arraySoundDone, 600);
+			setTimeout(arraySoundDone, 1500);
 		}
 		function arraySoundDone(){
 			PlayArraySilence();
 		}
 		function PlayArraySilence(){
 			stopSound();
-			setTimeout(arrayDone, 600);
+			setTimeout(arrayDone, 1500);
 		}
 		function PlayerSilence(){
-			setTimeout(playerDone, 400);
+			setTimeout(playerDone, 1500);
 		}
 		function playerDone(){
 			stopSound();
-			setTimeout(arrayDone, 800);
+			setTimeout(arrayDone, 1500);
 		}
 		function arrayDone(){
 			playComputerSound();
@@ -148,14 +166,14 @@
 			computerArray.push(randomNumber);
 			playSound(randomNumber);
 			gamestate = "computerTurnPlayRandomSoundWait";
-			setTimeout(randomSoundDone, 600);
+			setTimeout(randomSoundDone, 1500);
 		}
 		function randomSoundDone(){
 			PlayRandomSilence();
 		}
 		function PlayRandomSilence(){
 			stopSound();
-			setTimeout(randomDone, 600);
+			setTimeout(randomDone, 1500);
 		}
 		function randomDone(){
 			playerCounter = 0;
@@ -168,11 +186,11 @@
 			}
 			if (soundNumber==1){
 				gl2.setAttribute('opacity', "1");
-				fx1.play();
+				fx2.play();
 			}
 			if (soundNumber==2){
 				gl3.setAttribute('opacity', "1");
-				fx1.play();
+				fx3.play();
 			}
 		}
 		function stopSound(){
@@ -203,6 +221,7 @@
 						PlayerSilence();
 					}
 				}else{
+					fx4.play();
 					gameOver();
 				}
 			}
@@ -218,6 +237,7 @@
 						PlayerSilence();
 					}
 				}else{
+					fx4.play();
 					gameOver();
 				}
 			}
@@ -233,6 +253,7 @@
 						PlayerSilence();
 					}
 				}else{
+					fx4.play();
 					gameOver();
 				}
 			}
